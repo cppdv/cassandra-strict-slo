@@ -6,6 +6,7 @@ from mininet.node import RemoteController
 from mininet.node import OVSSwitch
 from time import sleep
 from mininet.node import OVSController
+from cassandra.cassandra_host import CassandraHost
 
 class MyTopo( Topo ):
     "Simple topology example."
@@ -30,10 +31,9 @@ class MyTopo( Topo ):
 
         #print "topology ready!"
         # Give some time for network to set up
-        sleep(1)
+        sleep(3)
 
-        # Make sure that everything is set up
-        sleep(1)
+	self.cassandra1.start_cassandra_host()
 
     def createTopology(self):
         # Initialize topology
@@ -61,6 +61,9 @@ class MyTopo( Topo ):
         self.addLink( host6, sw1 )
         self.addLink( host7, sw1 )
         self.addLink( host8, sw1 )
+
+	# Add CassandraHost
+	self.cassandra1 = CassandraHost(host1, 'h1')
          
     def getNet(self):
         return self.net
